@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% set title = "联赛：" + league %}
+
+{% block content %}
+<div class="mb-3">
+  <a class="text-decoration-none" href="/matches">← 返回比赛列表</a>
+</div>
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h3 class="mb-0">{{ league }}</h3>
+  <span class="badge text-bg-secondary">共 {{ matches|length }} 场</span>
+</div>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th>时间</th>
+          <th>对阵</th>
+          <th>BO</th>
+          <th>比分</th>
+          <th>状态</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for m in matches %}
+        <tr>
+          <td class="muted">{{ m.start_time or "-" }}</td>
+          <td>
+            <span class="fw-semibold">{{ m.team_a or "TBD" }}</span>
+            <span class="muted"> vs </span>
+            <span class="fw-semibold">{{ m.team_b or "TBD" }}</span>
+          </td>
+          <td>{{ m.bo or "-" }}</td>
+          <td class="score">{{ (m.score_a if m.score_a is not none else "-") }} : {{ (m.score_b if m.score_b is not none else "-") }}</td>
+          <td><span class="badge text-bg-light">{{ m.status or "-" }}</span></td>
+          <td class="text-end">
+            <a class="btn btn-sm btn-primary" href="/matches/{{ m.id }}/view">详情</a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
